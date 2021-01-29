@@ -4,7 +4,8 @@ from opsdroid.events import Message
 
 @match_event(Message)
 async def echo(opsdroid, config, message):
-    mxid = opsdroid.get_connector("matrix").mxid
-    if mxid in message.text:
-        newtext = message.text.split(":")[1]
+    conn = opsdroid.get_connector("matrix")
+    nick, mxid = conn.nick, conn.mxid
+    if nick in message.text or mxid in message.text:
+        newtext = message.text.split(":")[1].strip()
         await message.respond(newtext)
